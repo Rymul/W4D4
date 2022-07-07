@@ -9,32 +9,20 @@ class Hanoi
     end
 
     def get_answer
-        # begin
-            puts "Enter start tower (1-3):"
-            answer_1 = gets.chomp.to_i
-            start_i = answer_1-1
-            raise "That is an invalid tower!" if answer_1 > 3 || answer_1 < 1
-            raise "You can't move from an empty tower!" if stacks[start_i].empty?
-
-            puts "Enter tower to move to (1-3):"
-            answer_2 = gets.chomp.to_i
-            end_i = answer_2-1
-            raise "That is an invalid tower!" if answer_1 > 3 || answer_1 < 1
-        # rescue    
-            raise "You can't move from and to the same tower!" if answer_1 == answer_2
-        # retry
-            selected_disk = stacks[start_i].pop
-            stacks[end_i] << selected_disk
-            self.win?
-            raise "You can't move onto a smaller disk" if !stacks[end_i].empty? && selected_disk > stacks[end_i].last
-            
-        # end
+        puts "Enter start tower and a tower to move to (1-3) in the form of 1,2:"
+        answer = gets.chomp.split(",").map {|ele| ele.to_i}
+        answer_1 = answer[0]-1
+        answer_2 = answer[1]-1
+        raise "That is an invalid tower!" if answer_1 > 2 || answer_1 < 0
+        raise "You can't move from an empty tower!" if stacks[answer_1].empty?
+        raise "You can't move from and to the same tower!" if answer_1 == answer_2
+        raise "You can't move onto a smaller disk" if !stacks[answer_2].empty? && stacks[answer_1].last > stacks[answer_2].last
     end
 
-    # def move_disks
-    #     selected_disk = stacks[answer_1 - 1].pop
-    #     stacks[answer_2 - 1].push(selected_disk)
-    # end
+    def move_disks
+        selected_disk = stacks[answer_1].pop
+        stacks[answer_2] << selected_disk
+    end
 
     def win?
         if stacks.last == disks
@@ -63,6 +51,3 @@ class Hanoi
     end
 end
 
-
-game = Hanoi.new
-p game.play
